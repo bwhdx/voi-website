@@ -1,0 +1,71 @@
+.partners-carousel-container {
+    padding: 2rem 0;
+    background: white;
+    overflow: hidden;
+    position: relative;
+}
+
+.partners-title {
+    text-align: center;
+    color: #666;
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    font-weight: normal;
+}
+
+.partners-track {
+    display: flex;
+    width: 100%;
+    overflow: hidden;
+}
+
+.partners-slide {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    animation: scroll 30s linear infinite;
+    white-space: nowrap;
+}
+
+.partners-slide img {
+    height: 24px;
+    width: auto;
+    object-fit: contain;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.partners-slide img:hover {
+    opacity: 1;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+        /* Move by half the width since we duplicated the items */
+    }
+}
+
+/* Pause animation on hover */
+.partners-track:hover .partners-slide {
+    animation-play-state: paused;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .partners-carousel-container {
+        padding: 1.5rem 0;
+    }
+
+    .partners-slide {
+        gap: 3rem;
+    }
+
+    .partners-slide img {
+        height: 20px;
+    }
+}
