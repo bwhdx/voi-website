@@ -705,7 +705,8 @@ body {
     flex-direction: column;
     justify-content: space-between;
     transition: all 0.3s ease;
-    aspect-ratio: 1;
+    height: 300px;
+    /* Fixed height instead of aspect-ratio */
 }
 
 .news-card:hover {
@@ -805,6 +806,11 @@ body {
 
     .announcement-card {
         padding: 2rem;
+    }
+
+    .news-card {
+        height: 300px;
+        /* Keep same height on mobile */
     }
 }
 
