@@ -230,9 +230,30 @@
     }
 
     .carousel-navigation {
+        position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        bottom: -2rem;
+        bottom: -2.5rem;
+        padding: 1rem 0;
+        width: 100%;
+        justify-content: center;
+        z-index: 10;
+    }
+
+    .carousel-dots {
+        gap: 1rem;
+    }
+
+    .carousel-dot {
+        width: 10px;
+        height: 10px;
+        background: rgba(103, 46, 217, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .carousel-dot.active {
+        background: var(--voi-light);
+        transform: scale(1.3);
     }
 
     .carousel-button {
