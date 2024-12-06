@@ -1,7 +1,7 @@
 /* Use Cases Section */
 .use-cases-section {
     padding: 8rem 2rem;
-    background: #f8f9fe;
+    background: var(--bg-alt);
     position: relative;
 }
 
@@ -45,6 +45,7 @@
     position: relative;
     width: 100%;
     overflow: hidden;
+    padding-bottom: 2rem;
 }
 
 .carousel-track {
@@ -171,7 +172,7 @@
 .carousel-navigation {
     position: absolute;
     bottom: 0;
-    left: 2rem;
+    left: 1rem;
     display: flex;
     align-items: center;
     gap: 0.25rem;
@@ -262,15 +263,15 @@
         text-align: left;
     }
 
+    .carousel-container {
+        padding-bottom: 3rem;
+    }
+
     .carousel-navigation {
-        position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        bottom: -2.5rem;
-        padding: 1rem 0;
-        width: 100%;
         justify-content: center;
-        z-index: 10;
+        width: 100%;
     }
 
     .carousel-dots {
