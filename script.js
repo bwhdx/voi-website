@@ -163,4 +163,53 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initialize carousel
     goToSlide(0);
     startAutoplay();
+
+    // Mobile menu functionality
+    const hamburger = document.querySelector('.hamburger');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    
+    if (hamburger && mobileMenu) {
+        hamburger.addEventListener('click', function() {
+            const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
+            hamburger.setAttribute('aria-expanded', !isExpanded);
+            mobileMenu.classList.toggle('active');
+            mobileMenu.setAttribute('aria-hidden', isExpanded);
+        });
+    }
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(event) {
+        if (mobileMenu && mobileMenu.classList.contains('active') && 
+            !mobileMenu.contains(event.target) && 
+            !hamburger.contains(event.target)) {
+            mobileMenu.classList.remove('active');
+            hamburger.setAttribute('aria-expanded', 'false');
+            mobileMenu.setAttribute('aria-hidden', 'true');
+        }
+    });
+
+    // Add smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth'
+                });
+                // Close mobile menu if open
+                if (mobileMenu && mobileMenu.classList.contains('active')) {
+                    mobileMenu.classList.remove('active');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                    mobileMenu.setAttribute('aria-hidden', 'true');
+                }
+            }
+        });
+    });
+
+    // Add lazy loading for images
+    const images = document.querySelectorAll('img[src]');
+    images.forEach(img => {
+        img.setAttribute('loading', 'lazy');
+    });
 });

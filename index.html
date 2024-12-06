@@ -20,13 +20,22 @@
 
 <body>
     <!-- Navigation -->
-    <nav class="nav">
+    <nav class="nav" role="navigation">
         <div class="logo">
             <img src="assets/voi-logo.svg" alt="Voi Logo" class="nav-logo">
         </div>
-        <div class="nav-links">
-            <a href="https://docs.voi.network/" class="nav-btn">Learn More</a>
-            <a href="https://ecosystem.voi.network/" class="nav-btn primary-btn">Ecosystem Hub</a>
+        <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+            <div></div>
+            <div></div>
+            <div></div>
+        </button>
+        <div class="nav-links" role="menubar">
+            <a href="https://docs.voi.network/" class="nav-btn" role="menuitem">Learn More</a>
+            <a href="https://ecosystem.voi.network/" class="nav-btn primary-btn" role="menuitem">Ecosystem Hub</a>
+        </div>
+        <div class="mobile-menu" role="menu" aria-hidden="true">
+            <a href="https://docs.voi.network/" class="nav-btn" role="menuitem">Learn More</a>
+            <a href="https://ecosystem.voi.network/" class="nav-btn primary-btn" role="menuitem">Ecosystem Hub</a>
         </div>
     </nav>
 
@@ -271,31 +280,29 @@
     <section class="numbers-section">
         <div class="container">
             <h2 class="numbers-title">The Market</h2>
-            <p class="numbers-subtitle">The global managed property market represents a massive opportunity for
-                blockchain innovation</p>
+            <p class="numbers-subtitle">The built environment represents a massive opportunity for blockchain innovation
+                across residential, commercial, and institutional sectors</p>
 
             <div class="stats-grid">
                 <div class="stat-item">
                     <div class="stat-number">$30T</div>
-                    <p class="stat-description">Total value of institutionally managed real estate globally across
-                        residential, commercial, and specialized sectors</p>
+                    <p class="stat-description">Total value of institutional buildings and infrastructure globally</p>
                 </div>
 
                 <div class="stat-item">
                     <div class="stat-number">$1T</div>
-                    <p class="stat-description">Annual revenue from property management operations across all sectors
-                    </p>
+                    <p class="stat-description">Annual revenue from operations across all built environment sectors</p>
                 </div>
 
                 <div class="stat-item">
                     <div class="stat-number">8.5B</div>
-                    <p class="stat-description">Square meters of managed property space globally requiring operational
-                        solutions</p>
+                    <p class="stat-description">Square meters of built space globally requiring operational solutions
+                    </p>
                 </div>
 
                 <div class="stat-item">
                     <div class="stat-number">75%</div>
-                    <p class="stat-description">Of property managers cite operational inefficiencies as their biggest
+                    <p class="stat-description">Of property operators cite operational inefficiencies as their biggest
                         challenge</p>
                 </div>
             </div>
@@ -430,19 +437,6 @@
                     </div>
                 </div>
 
-                <!-- Learn Section -->
-                <div class="footer-nav">
-                    <h3 class="footer-heading">Explore</h3>
-                    <div class="footer-links">
-                        <a href="#" class="footer-link">Vision</a>
-                        <a href="https://ecosystem.voi.network/" class="footer-link">
-                            Ecosystem
-                            <span class="link-arrow">↗</span>
-                        </a>
-                        <a href="#" class="footer-link">Token</a>
-                    </div>
-                </div>
-
                 <!-- Build Section -->
                 <div class="footer-nav">
                     <h3 class="footer-heading">Build</h3>
@@ -472,7 +466,10 @@
                     <h3 class="footer-heading">Community</h3>
                     <div class="footer-links">
                         <a href="https://ecosystem.voi.network/" class="footer-link">
-                            Hub
+                            Ecosystem
+                            <span class="link-arrow">↗</span>
+                        </a>
+                        <a href="https://ecosystem.voi.network/" class="footer-link">Token
                             <span class="link-arrow">↗</span>
                         </a>
                         <a href="https://voifoundation.medium.com/" class="footer-link">
