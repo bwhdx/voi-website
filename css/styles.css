@@ -10,11 +10,55 @@
 
 :root {
     --voi-dark: #2C037A;
-    --voi-light: #672ed9;
+    --voi-light: #672ED9;
+    /* Border radius values */
+    --radius-sm: 2px;    /* For buttons, small elements */
+    --radius-md: 4px;    /* For cards, medium-sized elements */
+    --radius-lg: 8px;    /* For large containers */
+    /* Background variations */
+    --bg-light: #ffffff;
+    --bg-alt: #f8f9fe;
+    --bg-dark: #000000;
 }
 
 body {
     background: white;
     color: #1a1a1a;
     font-family: 'Satoshi', sans-serif;
+}
+
+/* Global button styles */
+.primary-btn {
+    border-radius: var(--radius-sm);
+}
+
+/* Global card styles */
+.card {
+    border-radius: var(--radius-md);
+}
+
+/* Focus states */
+:focus-visible {
+    outline: 2px solid var(--voi-light);
+    outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible {
+    outline: 2px solid var(--voi-light);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+}
+
+.carousel-dot:focus-visible {
+    outline-offset: 4px;
+}
+
+.news-card:focus-visible {
+    outline-offset: 8px;
+}
+
+/* Remove default focus styles when using mouse */
+:focus:not(:focus-visible) {
+    outline: none;
 }
