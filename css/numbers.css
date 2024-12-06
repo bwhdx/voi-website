@@ -1,37 +1,58 @@
 /* Numbers Section */
 .numbers-section {
     padding: 8rem 2rem;
-    background: white;
+    background: #ffffff;
+    position: relative;
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
+    position: relative;
+}
+
+.numbers-header {
+    max-width: 800px;
+    margin-bottom: 6rem;
+    position: relative;
+}
+
+.numbers-header::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2rem;
+    width: 60px;
+    height: 4px;
+    background: var(--voi-light);
 }
 
 .numbers-title {
     font-size: 3.5rem;
     color: var(--voi-dark);
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     font-weight: 700;
+    line-height: 1.2;
 }
 
 .numbers-subtitle {
     font-size: 1.25rem;
     color: #666;
-    margin-bottom: 6rem;
+    line-height: 1.6;
     max-width: 600px;
 }
 
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 4rem;
+    gap: 4rem 6rem;
+    position: relative;
 }
 
 .stat-item {
-    padding: 2rem 0;
-    border-top: 1px solid rgba(103, 46, 217, 0.1);
+    position: relative;
+    padding-left: 2rem;
+    border-left: 1px solid rgba(103, 46, 217, 0.1);
 }
 
 .stat-number {
@@ -46,17 +67,42 @@
     font-size: 1.25rem;
     line-height: 1.5;
     color: #666;
-    max-width: 90%;
+}
+
+@media (max-width: 968px) {
+    .numbers-section {
+        padding: 6rem 2rem;
+    }
+
+    .numbers-title {
+        font-size: 3rem;
+    }
+
+    .stats-grid {
+        gap: 3rem 4rem;
+    }
 }
 
 @media (max-width: 768px) {
-    .stats-grid {
-        grid-template-columns: 1fr;
-        gap: 3rem;
+    .numbers-section {
+        padding: 4rem 1.5rem;
+    }
+
+    .numbers-header {
+        margin-bottom: 4rem;
     }
 
     .numbers-title {
         font-size: 2.5rem;
+    }
+
+    .numbers-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
     }
 
     .stat-number {
@@ -65,5 +111,19 @@
 
     .stat-description {
         font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .numbers-section {
+        padding: 3rem 1rem;
+    }
+
+    .numbers-title {
+        font-size: 2rem;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
     }
 }
