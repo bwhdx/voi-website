@@ -213,7 +213,6 @@
 @media (max-width: 480px) {
     .hero {
         padding: 1rem;
-        padding-top:5rem;
         min-height: 100vh;
         height: auto;
         /* Allow content to determine height on mobile */
