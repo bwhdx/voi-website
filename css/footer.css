@@ -27,13 +27,17 @@
 
 .footer-grid {
     display: grid;
-    grid-template-columns: 1.2fr repeat(3, 1fr);
-    gap: 6rem;
-    margin-bottom: 6rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-bottom: 4rem;
 }
 
 .brand-section {
-    position: relative;
+    padding-right: 2rem;
+}
+
+.footer-nav {
+    padding-right: 2rem;
 }
 
 .footer-logo {
@@ -50,9 +54,7 @@
     font-size: 1.25rem;
     font-weight: 600;
     margin-bottom: 2rem;
-    background: linear-gradient(135deg, #000 0%, #333 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #000;
     letter-spacing: 0.5px;
 }
 
@@ -151,20 +153,19 @@
     color: #ccc;
 }
 
-@media (max-width: 1024px) {
-    .footer-grid {
-        gap: 4rem;
-    }
-}
-
 @media (max-width: 768px) {
     .footer {
-        padding: 6rem 2rem 3rem;
+        padding: 6rem 1.5rem 3rem;
+    }
+    
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
     }
 
-    .footer-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 3rem;
+    .footer-nav, 
+    .brand-section {
+        padding-right: 0;
     }
 
     .footer-accent {
@@ -173,10 +174,6 @@
 }
 
 @media (max-width: 480px) {
-    .footer-grid {
-        grid-template-columns: 1fr;
-    }
-
     .footer-bottom {
         flex-direction: column;
         gap: 1.5rem;

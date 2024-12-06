@@ -2,10 +2,10 @@
 .hero {
     position: relative;
     height: 100vh;
-    /* Force full viewport height */
+    min-height: 800px;
+    display: flex;
+    align-items: center;
     overflow: hidden;
-    padding: 2rem;
-    padding-top: 10rem
 }
 
 .hero-background {
@@ -15,8 +15,12 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
     z-index: -2;
+    transition: transform 0.3s ease-out;
+}
+
+.hero:hover .hero-background {
+    transform: scale(1.05);
 }
 
 .hero-overlay {
@@ -25,81 +29,110 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, rgba(44, 3, 122, 0.9), rgba(103, 46, 217, 0.8));
+    background: linear-gradient(135deg, rgba(44, 3, 122, 0.95), rgba(103, 46, 217, 0.85));
     z-index: -1;
 }
 
 .hero-content {
-    position: relative;
-    height: 100%;
-    max-width: 800px;
-    margin-left: 10%;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
     color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    /* This ensures main content and featured section are spread apart */
 }
 
 .hero-main {
-    padding-top: 120px;
-    /* Adjust based on your header height */
-    max-width: 90%;
+    max-width: 800px;
 }
 
 .hero-title {
-    font-size: clamp(2rem, 5vw, 4rem);
-    line-height: 1.2;
-    margin-bottom: clamp(1rem, 3vw, 1.5rem);
+    font-size: 4rem;
     font-weight: 700;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s ease forwards;
 }
 
 .hero-subtitle {
-    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-size: 1.5rem;
+    margin-bottom: 2.5rem;
     line-height: 1.6;
-    margin-bottom: clamp(1.5rem, 4vw, 2rem);
-    opacity: 0.9;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s ease forwards 0.2s;
 }
 
 .property-types {
     display: flex;
-    gap: 0.8rem;
     flex-wrap: wrap;
-    margin-bottom: clamp(1.5rem, 4vw, 2rem);
-    max-width: 90%;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s ease forwards 0.4s;
 }
 
 .property-tag {
-    background: rgba(255, 255, 255, 0.15);
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: clamp(0.8rem, 1.5vw, 0.9rem);
-    backdrop-filter: blur(5px);
-    white-space: nowrap;
+    padding: 0.5rem 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2rem;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.property-tag:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
 }
 
 .cta-container {
     display: flex;
     gap: 1rem;
-    margin-bottom: 3rem;
+    margin-bottom: 4rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s ease forwards 0.6s;
 }
 
 .cta-btn {
-    padding: 0.75rem 2rem;
-    border-radius: 24px;
+    padding: 1rem 2rem;
+    border-radius: 2rem;
     text-decoration: none;
     font-weight: 500;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
 }
 
 .cta-primary {
     background: white;
-    color: var(--voi-dark);
+    color: var(--voi-light);
+}
+
+.cta-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
 }
 
 .cta-secondary {
-    border: 2px solid white;
+    background: rgba(255, 255, 255, 0.1);
     color: white;
+}
+
+.cta-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Featured Section */
@@ -108,6 +141,10 @@
     bottom: 2rem;
     left: 10%;
     width: 80%;
+    background: rgba(44, 3, 122, 0.3);
+    backdrop-filter: blur(10px);
+    padding: 1.5rem;
+    border-radius: 1rem;
 }
 
 .featured-label {
@@ -119,27 +156,27 @@
 
 .featured-logos {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
+    gap: 2rem;
     justify-content: flex-start;
-    gap: 2.5rem;
-    flex-wrap: nowrap;
-}
-
-.featured-logos::-webkit-scrollbar {
-    display: none;
 }
 
 .featured-logos a {
-    flex: 0 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.featured-logos a:hover {
+    transform: translateY(-2px);
 }
 
 .featured-logos img {
     height: 20px;
     width: auto;
-    min-width: 60px;
+    min-width: 80px;
     max-width: 120px;
     object-fit: contain;
     filter: brightness(0) invert(1);
@@ -147,10 +184,17 @@
     transition: opacity 0.3s ease;
 }
 
-/* Specific adjustments for larger logos */
+.featured-logos img:hover {
+    opacity: 1;
+}
+
+.featured-logos img[alt="Decrypt"],
+.featured-logos img[alt="Blockworks"],
 .featured-logos img[alt="Bitcoin.com News"],
-.featured-logos img[alt="Blockworks"] {
-    max-width: 100px;
+.featured-logos img[alt="CoinDesk"] {
+    height: 20px;
+    min-width: 100px;
+    max-width: 120px;
 }
 
 /* Media Queries */
@@ -165,63 +209,56 @@
     }
 
     .featured-logos {
-        gap: 2rem;
+        gap: 1.5rem;
     }
 }
 
-@media (max-width: 768px) {
-    .featured-logos {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 1.5rem;
+@media (max-width: 900px) {
+    .featured-section {
+        bottom: 3rem;
     }
 
-    .featured-logos a {
-        flex: 0 0 calc(33.333% - 1rem);
+    .featured-logos {
+        gap: 1.25rem 2rem;
+        justify-content: center;
     }
 
     .featured-logos img {
         height: 18px;
-        min-width: 50px;
-        max-width: 100px;
+        min-width: 70px;
+        max-width: 110px;
     }
 }
 
-@media (max-height: 700px) {
-    .hero-main {
-        padding-top: 60px;
+@media (max-width: 768px) {
+    .hero {
+        min-height: 600px;
     }
 
-    .hero-content {
-        padding-top: 40px;
-        gap: 1rem;
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.2rem;
     }
 
     .property-types {
-        margin-bottom: 1rem;
+        justify-content: center;
+    }
+
+    .property-tag {
+        padding: 0.4rem 1.2rem;
+        font-size: 0.8rem;
     }
 
     .cta-container {
-        margin-bottom: 1.5rem;
+        flex-direction: column;
+        align-items: stretch;
     }
 
-    .featured-section {
-        bottom: 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .hero {
-        padding: 1rem;
-        min-height: 100vh;
-        height: auto;
-        /* Allow content to determine height on mobile */
-    }
-
-    .hero-content {
-        margin: 0;
-        padding: 1rem;
-        min-height: 100vh;
+    .cta-btn {
+        text-align: center;
     }
 
     .hero-main {
@@ -243,19 +280,74 @@
         padding-top: 5rem;
     }
 
+    .featured-section {
+        bottom: 2rem;
+        width: 100%;
+        left: 0;
+        padding: 1.25rem;
+        border-radius: 0;
+    }
+
     .featured-logos {
         gap: 1.25rem;
     }
 
-    .featured-logos a {
-        flex: 0 0 calc(50% - 1rem);
-    }
-
     .featured-logos img {
         height: 16px;
+        min-width: 60px;
+        max-width: 100px;
+    }
+
+    .featured-logos img[alt="Decrypt"],
+    .featured-logos img[alt="Blockworks"],
+    .featured-logos img[alt="Bitcoin.com News"],
+    .featured-logos img[alt="CoinDesk"] {
+        height: 16px;
+        min-width: 80px;
+        max-width: 100px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .hero-content {
+        padding: 0 1rem;
+    }
+
+    .property-tag {
+        padding: 0.3rem 1rem;
+        font-size: 0.75rem;
     }
 
     .featured-section {
-        bottom: 7rem;
+        padding: 1rem;
+        bottom: 1.5rem;
+    }
+
+    .featured-logos {
+        gap: 1rem;
+    }
+
+    .featured-label {
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+    .featured-logos img {
+        height: 14px;
+        min-width: 50px;
+        max-width: 80px;
+    }
+
+    .featured-logos img[alt="Decrypt"],
+    .featured-logos img[alt="Blockworks"],
+    .featured-logos img[alt="Bitcoin.com News"],
+    .featured-logos img[alt="CoinDesk"] {
+        height: 14px;
+        min-width: 70px;
+        max-width: 90px;
     }
 }
