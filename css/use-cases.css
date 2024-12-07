@@ -63,7 +63,7 @@
     display: grid;
     grid-template-columns: 65% 35%;
     background: white;
-    border-radius: 0.5rem;
+    border-radius: var(--radius-lg);
     overflow: hidden;
     height: 400px;
     gap: 0.25rem;
@@ -88,10 +88,11 @@
     padding: 2rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     background: var(--voi-dark);
-    border-radius: 0.5rem;
+    border-radius: var(--radius-md);
     position: relative;
+    height: 100%;
 }
 
 .case-study-title {
@@ -124,15 +125,20 @@
     font-size: 1.1rem;
     line-height: 1.6;
     color: white;
-    margin-right: 1rem;
+    margin: 0;
+    padding-top: 0.5rem;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
 }
 
 .case-study-alt {
-    font-size: 2rem;
-    color: white;
-    position: absolute;
-    bottom: 2rem;
-    right: 2rem;
+    font-size: 1.1rem;
+    color: var(--voi-light);
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    line-height: 1.4;
 }
 
 /* Carousel Navigation */
@@ -202,7 +208,95 @@
     transform: scale(1.5);
 }
 
-/* Mobile Styles */
+/* Large screens */
+@media (min-width: 1200px) {
+    .case-study-quote {
+        font-size: 1.1rem;
+    }
+}
+
+/* Medium-large screens */
+@media (max-width: 1199px) and (min-width: 992px) {
+    .case-study-card {
+        height: 450px;
+    }
+    
+    .case-study-quote {
+        font-size: 1rem;
+    }
+}
+
+/* Medium screens */
+@media (max-width: 991px) and (min-width: 769px) {
+    .case-study-card {
+        height: 500px;
+    }
+
+    .case-study-quote {
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    .case-study-title {
+        font-size: 1.75rem;
+    }
+}
+
+/* Tablet/Small screens */
+@media (max-width: 768px) {
+    .case-study-card {
+        display: flex;
+        flex-direction: column;
+        background: white;
+        border-radius: 1rem;
+        overflow: hidden;
+        height: auto;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .case-study-image-container {
+        height: 240px;
+    }
+
+    .case-study-content {
+        padding: 1.5rem;
+        min-height: 200px;
+    }
+
+    .case-study-quote {
+        font-size: 1rem;
+        line-height: 1.5;
+        padding-top: 0;
+    }
+
+    .case-study-alt {
+        font-size: 1rem;
+        margin-top: 1.5rem;
+    }
+}
+
+/* Mobile screens */
+@media (max-width: 480px) {
+    .case-study-image-container {
+        height: 200px;
+    }
+
+    .case-study-content {
+        padding: 1.25rem;
+        min-height: 180px;
+    }
+
+    .case-study-quote {
+        font-size: 0.95rem;
+    }
+
+    .case-study-alt {
+        font-size: 0.95rem;
+        margin-top: 1.25rem;
+    }
+}
+
+/* Section Responsive Styles */
 @media (max-width: 768px) {
     .use-cases-section {
         padding: 4rem 1.5rem;
@@ -218,53 +312,6 @@
 
     .use-cases-subtitle {
         font-size: 1.1rem;
-    }
-
-    .case-study-card {
-        display: flex;
-        flex-direction: column;
-        background: white;
-        border-radius: 1rem;
-        overflow: hidden;
-        height: auto;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .case-study-image-container {
-        position: relative;
-        height: 240px;
-        border-radius: 1rem 1rem 0 0;
-    }
-
-    .case-study-title {
-        font-size: 1.75rem;
-        text-align: left;
-    }
-
-    .case-study-content {
-        padding: 1.5rem;
-        min-height: 240px;
-        border-radius: 0;
-    }
-
-    .case-study-quote {
-        font-size: 1rem;
-        line-height: 1.5;
-        margin-bottom: 1rem;
-        margin-top: 0;
-    }
-
-    .case-study-alt {
-        position: relative;
-        bottom: auto;
-        right: auto;
-        font-size: 1.5rem;
-        margin-top: auto;
-        text-align: left;
-    }
-
-    .carousel-container {
-        padding-bottom: 3rem;
     }
 
     .carousel-navigation {
@@ -295,7 +342,6 @@
     }
 }
 
-/* Small Mobile Adjustments */
 @media (max-width: 480px) {
     .use-cases-section {
         padding: 3rem 1rem;
@@ -303,26 +349,5 @@
 
     .use-cases-title {
         font-size: 2rem;
-    }
-
-    .case-study-image-container {
-        height: 200px;
-    }
-
-    .case-study-title {
-        font-size: 1.5rem;
-    }
-
-    .case-study-content {
-        min-height: 200px;
-        padding: 1.25rem;
-    }
-
-    .case-study-quote {
-        font-size: 0.95rem;
-    }
-
-    .case-study-alt {
-        font-size: 1.25rem;
     }
 }
