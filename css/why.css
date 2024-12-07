@@ -130,6 +130,8 @@
 @media (max-width: 768px) {
     .why-voi-section {
         padding: 4rem 1.5rem;
+        overflow: hidden;
+        position: relative;
     }
 
     .section-title {
@@ -144,20 +146,41 @@
     .features-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
-    }
-
-    .feature-title {
-        font-size: 1.3rem;
+        padding: 2rem 0;
+        position: relative;
     }
 
     .feature-item {
-        grid-template-columns: 40px 1fr;
-        gap: 1.25rem;
+        position: relative;
+        padding: 2rem;
+        background: white;
+        border-radius: var(--radius-lg);
+        margin: 1rem 0;
+        will-change: transform, background-color;
+        transform-origin: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        transition: transform 0.05s linear, background-color 0.05s linear;
     }
 
-    .feature-icon {
-        width: 40px;
-        height: 40px;
+    .feature-item .feature-icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    .feature-item .feature-icon svg {
+        transition: stroke 0.05s linear;
+    }
+
+    .feature-item .feature-number {
+        transition: color 0.05s linear;
+    }
+
+    .feature-item .feature-title {
+        transition: color 0.05s linear;
+    }
+
+    .feature-item .feature-description {
+        transition: color 0.05s linear;
     }
 }
 

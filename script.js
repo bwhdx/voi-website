@@ -212,4 +212,79 @@ document.addEventListener('DOMContentLoaded', function () {
     images.forEach(img => {
         img.setAttribute('loading', 'lazy');
     });
+
+    // Feature items scroll effect
+    function initFeatureScroll() {
+        if (window.innerWidth > 768) return;
+
+        const section = document.querySelector('.why-voi-section');
+        const featureItems = document.querySelectorAll('.feature-item');
+        
+        function updateFeatures() {
+            const viewportCenter = window.innerHeight / 2;
+            
+            featureItems.forEach((item) => {
+                const rect = item.getBoundingClientRect();
+                const itemCenter = rect.top + (rect.height / 2);
+                
+                // Calculate position relative to viewport center (-1 to 1)
+                const relativePosition = (itemCenter - viewportCenter) / (window.innerHeight / 2);
+                
+                // Calculate scale (1 to 1.08)
+                const scale = 1 + Math.max(0, 0.08 * (1 - Math.abs(relativePosition)));
+                
+                // Calculate color intensity (0 to 1)
+                const colorIntensity = Math.max(0, 1 - Math.abs(relativePosition * 1.2));
+                
+                // Apply transformations
+                item.style.transform = `scale(${scale})`;
+                
+                // Update colors based on intensity
+                if (colorIntensity > 0) {
+                    // Interpolate between white (255,255,255) and Voi purple (124,58,237)
+                    const r = Math.round(255 - (colorIntensity * (255 - 124)));
+                    const g = Math.round(255 - (colorIntensity * (255 - 58)));
+                    const b = Math.round(255 - (colorIntensity * (255 - 237)));
+                    
+                    item.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+                    
+                    // Text color transitions
+                    if (colorIntensity > 0.5) {
+                        item.querySelector('.feature-title').style.color = 'white';
+                        item.querySelector('.feature-description').style.color = 'rgba(255, 255, 255, 0.9)';
+                        item.querySelector('.feature-number').style.color = 'rgba(255, 255, 255, 0.8)';
+                        item.querySelector('.feature-icon svg').style.stroke = 'white';
+                    } else {
+                        item.querySelector('.feature-title').style.color = '';
+                        item.querySelector('.feature-description').style.color = '';
+                        item.querySelector('.feature-number').style.color = '';
+                        item.querySelector('.feature-icon svg').style.stroke = '';
+                    }
+                } else {
+                    item.style.backgroundColor = 'white';
+                    item.querySelector('.feature-title').style.color = '';
+                    item.querySelector('.feature-description').style.color = '';
+                    item.querySelector('.feature-number').style.color = '';
+                    item.querySelector('.feature-icon svg').style.stroke = '';
+                }
+            });
+            
+            requestAnimationFrame(updateFeatures);
+        }
+        
+        // Start the animation loop
+        requestAnimationFrame(updateFeatures);
+    }
+
+    // Initialize on mobile
+    if (window.innerWidth <= 768) {
+        initFeatureScroll();
+        
+        // Reinitialize on resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth <= 768) {
+                initFeatureScroll();
+            }
+        });
+    }
 });
