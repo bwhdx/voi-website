@@ -246,9 +246,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Scale transition (linear)
                 const scale = 1 + Math.max(0, 0.08 * (1 - Math.abs(relativePosition)));
                 
-                // Color transition (exponential for more dramatic falloff)
-                const colorIntensity = Math.max(0, 1 - Math.abs(relativePosition));
-                const colorPower = Math.pow(colorIntensity, 4); // More dramatic falloff
+                // Color transition with plateau
+                const absoluteDistance = Math.abs(relativePosition);
+                let colorIntensity;
+                
+                if (absoluteDistance < 0.15) { // Create a plateau for 30% of the center area
+                    colorIntensity = 1;
+                } else {
+                    // Sharp falloff after the plateau
+                    colorIntensity = Math.max(0, 1 - ((absoluteDistance - 0.15) * 1.5));
+                }
+                
+                // Apply exponential falloff after plateau
+                const colorPower = Math.pow(colorIntensity, 3);
                 
                 // Apply transformations
                 data.element.style.transform = `scale(${scale})`;
