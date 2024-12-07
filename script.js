@@ -167,9 +167,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // Mobile menu functionality
     const hamburger = document.querySelector('.hamburger');
     const mobileMenu = document.querySelector('.mobile-menu');
-    
+
     if (hamburger && mobileMenu) {
-        hamburger.addEventListener('click', function() {
+        hamburger.addEventListener('click', function () {
             const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
             hamburger.setAttribute('aria-expanded', !isExpanded);
             mobileMenu.classList.toggle('active');
@@ -178,9 +178,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Close mobile menu when clicking outside
-    document.addEventListener('click', function(event) {
-        if (mobileMenu && mobileMenu.classList.contains('active') && 
-            !mobileMenu.contains(event.target) && 
+    document.addEventListener('click', function (event) {
+        if (mobileMenu && mobileMenu.classList.contains('active') &&
+            !mobileMenu.contains(event.target) &&
             !hamburger.contains(event.target)) {
             mobileMenu.classList.remove('active');
             hamburger.setAttribute('aria-expanded', 'false');
@@ -218,98 +218,113 @@ document.addEventListener('DOMContentLoaded', function () {
         if (window.innerWidth > 768) return;
 
         const featureItems = document.querySelectorAll('.feature-item');
-        let ticking = false;
+        let isScrolling;
         let rafId = null;
         
+        // Cache DOM queries for better performance
+        const itemData = Array.from(featureItems).map(item => ({
+            element: item,
+            title: item.querySelector('.feature-title'),
+            description: item.querySelector('.feature-description'),
+            number: item.querySelector('.feature-number'),
+            icon: item.querySelector('.feature-icon svg'),
+            rect: item.getBoundingClientRect()
+        }));
+
         function updateFeatures() {
             const viewportCenter = window.innerHeight / 2;
             
-            featureItems.forEach((item) => {
-                const rect = item.getBoundingClientRect();
-                const itemCenter = rect.top + (rect.height / 2);
-                
-                // Calculate position relative to viewport center (-1 to 1)
+            // Update cached rectangles only when needed
+            itemData.forEach(data => {
+                data.rect = data.element.getBoundingClientRect();
+            });
+            
+            itemData.forEach(data => {
+                const itemCenter = data.rect.top + (data.rect.height / 2);
                 const relativePosition = (itemCenter - viewportCenter) / (window.innerHeight / 2);
                 
-                // Calculate scale (1 to 1.08) - linear scale for smooth size transition
+                // Scale transition (linear)
                 const scale = 1 + Math.max(0, 0.08 * (1 - Math.abs(relativePosition)));
                 
-                // Calculate color intensity (0 to 1) - using power curve for more dramatic color falloff
+                // Color transition (exponential for more dramatic falloff)
                 const colorIntensity = Math.max(0, 1 - Math.abs(relativePosition));
-                // Apply a power curve to make the color transition more dramatic
-                const colorPower = Math.pow(colorIntensity, 3);
+                const colorPower = Math.pow(colorIntensity, 4); // More dramatic falloff
                 
                 // Apply transformations
-                item.style.transform = `scale(${scale})`;
+                data.element.style.transform = `scale(${scale})`;
                 
                 // Update colors based on intensity
-                if (colorPower > 0) {
-                    // Interpolate between white (255,255,255) and Voi purple (124,58,237)
+                if (colorIntensity > 0) {
+                    // Interpolate between white and Voi purple
                     const r = Math.round(255 - (colorPower * (255 - 124)));
                     const g = Math.round(255 - (colorPower * (255 - 58)));
                     const b = Math.round(255 - (colorPower * (255 - 237)));
                     
-                    item.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+                    data.element.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
                     
-                    // Text color transitions - only update if needed
+                    // Text color transitions
                     if (colorPower > 0.5) {
-                        item.querySelector('.feature-title').style.color = 'white';
-                        item.querySelector('.feature-description').style.color = 'rgba(255, 255, 255, 0.9)';
-                        item.querySelector('.feature-number').style.color = 'rgba(255, 255, 255, 0.8)';
-                        item.querySelector('.feature-icon svg').style.stroke = 'white';
+                        data.title.style.color = 'white';
+                        data.description.style.color = 'rgba(255, 255, 255, 0.9)';
+                        data.number.style.color = 'rgba(255, 255, 255, 0.8)';
+                        data.icon.style.stroke = 'white';
                     } else {
-                        item.querySelector('.feature-title').style.color = '';
-                        item.querySelector('.feature-description').style.color = '';
-                        item.querySelector('.feature-number').style.color = '';
-                        item.querySelector('.feature-icon svg').style.stroke = '';
+                        data.title.style.color = '';
+                        data.description.style.color = '';
+                        data.number.style.color = '';
+                        data.icon.style.stroke = '';
                     }
                 } else {
-                    item.style.backgroundColor = 'white';
-                    item.querySelector('.feature-title').style.color = '';
-                    item.querySelector('.feature-description').style.color = '';
-                    item.querySelector('.feature-number').style.color = '';
-                    item.querySelector('.feature-icon svg').style.stroke = '';
+                    data.element.style.backgroundColor = 'white';
+                    data.title.style.color = '';
+                    data.description.style.color = '';
+                    data.number.style.color = '';
+                    data.icon.style.stroke = '';
                 }
             });
-            
-            ticking = false;
         }
 
-        // Throttled scroll handler
         function onScroll() {
-            if (!ticking) {
-                ticking = true;
-                rafId = requestAnimationFrame(updateFeatures);
+            // Cancel any pending animation frame
+            if (rafId) {
+                cancelAnimationFrame(rafId);
             }
+            
+            // Schedule new animation frame
+            rafId = requestAnimationFrame(updateFeatures);
+            
+            // Clear the timeout
+            window.clearTimeout(isScrolling);
+            
+            // Set a timeout to run after scrolling ends
+            isScrolling = setTimeout(() => {
+                // One final update after scrolling ends
+                rafId = requestAnimationFrame(updateFeatures);
+            }, 66);
         }
 
-        // Add scroll event listener with throttling
+        // Add scroll event listener
         window.addEventListener('scroll', onScroll, { passive: true });
         
-        // Initial check
+        // Initial update
         updateFeatures();
 
         // Cleanup function
         return function cleanup() {
+            window.clearTimeout(isScrolling);
             if (rafId) {
                 cancelAnimationFrame(rafId);
             }
             window.removeEventListener('scroll', onScroll);
-            featureItems.forEach(item => {
-                item.style.transform = '';
-                item.style.backgroundColor = '';
-                const elements = [
-                    item.querySelector('.feature-title'),
-                    item.querySelector('.feature-description'),
-                    item.querySelector('.feature-number'),
-                    item.querySelector('.feature-icon svg')
-                ];
-                elements.forEach(el => {
-                    if (el) {
-                        el.style.color = '';
-                        if (el.tagName === 'svg') el.style.stroke = '';
-                    }
-                });
+            
+            // Reset all styles
+            itemData.forEach(data => {
+                data.element.style.transform = '';
+                data.element.style.backgroundColor = '';
+                data.title.style.color = '';
+                data.description.style.color = '';
+                data.number.style.color = '';
+                data.icon.style.stroke = '';
             });
         };
     }
