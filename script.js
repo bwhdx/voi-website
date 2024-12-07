@@ -218,102 +218,105 @@ document.addEventListener('DOMContentLoaded', function () {
         if (window.innerWidth > 768) return;
 
         const featureItems = document.querySelectorAll('.feature-item');
-        let isScrolling;
         let rafId = null;
+        let ticking = false;
         
-        // Cache DOM queries for better performance
+        // Cache DOM queries and create element references
         const itemData = Array.from(featureItems).map(item => ({
             element: item,
             title: item.querySelector('.feature-title'),
             description: item.querySelector('.feature-description'),
             number: item.querySelector('.feature-number'),
-            icon: item.querySelector('.feature-icon svg'),
-            rect: item.getBoundingClientRect()
+            icon: item.querySelector('.feature-icon svg')
         }));
+
+        // Create a style element for dynamic styles
+        const styleElement = document.createElement('style');
+        document.head.appendChild(styleElement);
 
         function updateFeatures() {
             const viewportCenter = window.innerHeight / 2;
             
-            // Update cached rectangles only when needed
-            itemData.forEach(data => {
-                data.rect = data.element.getBoundingClientRect();
-            });
+            // Find the item closest to center
+            let closestItem = null;
+            let minDistance = Infinity;
             
             itemData.forEach(data => {
-                const itemCenter = data.rect.top + (data.rect.height / 2);
-                const relativePosition = (itemCenter - viewportCenter) / (window.innerHeight / 2);
-                
-                // Scale transition (linear)
-                const scale = 1 + Math.max(0, 0.08 * (1 - Math.abs(relativePosition)));
-                
-                // Color transition with plateau
-                const absoluteDistance = Math.abs(relativePosition);
-                let colorIntensity;
-                
-                if (absoluteDistance < 0.15) { // Create a plateau for 30% of the center area
-                    colorIntensity = 1;
-                } else {
-                    // Sharp falloff after the plateau
-                    colorIntensity = Math.max(0, 1 - ((absoluteDistance - 0.15) * 1.5));
-                }
-                
-                // Apply exponential falloff after plateau
-                const colorPower = Math.pow(colorIntensity, 3);
-                
-                // Apply transformations
-                data.element.style.transform = `scale(${scale})`;
-                
-                // Update colors based on intensity
-                if (colorIntensity > 0) {
-                    // Interpolate between white and Voi purple
-                    const r = Math.round(255 - (colorPower * (255 - 124)));
-                    const g = Math.round(255 - (colorPower * (255 - 58)));
-                    const b = Math.round(255 - (colorPower * (255 - 237)));
-                    
-                    data.element.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
-                    
-                    // Text color transitions
-                    if (colorPower > 0.5) {
-                        data.title.style.color = 'white';
-                        data.description.style.color = 'rgba(255, 255, 255, 0.9)';
-                        data.number.style.color = 'rgba(255, 255, 255, 0.8)';
-                        data.icon.style.stroke = 'white';
-                    } else {
-                        data.title.style.color = '';
-                        data.description.style.color = '';
-                        data.number.style.color = '';
-                        data.icon.style.stroke = '';
-                    }
-                } else {
-                    data.element.style.backgroundColor = 'white';
-                    data.title.style.color = '';
-                    data.description.style.color = '';
-                    data.number.style.color = '';
-                    data.icon.style.stroke = '';
+                const rect = data.element.getBoundingClientRect();
+                const itemCenter = rect.top + (rect.height / 2);
+                const distance = Math.abs(itemCenter - viewportCenter);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestItem = data;
                 }
             });
+            
+            // Batch all style updates
+            let styleRules = '';
+            
+            itemData.forEach((data, index) => {
+                const rect = data.element.getBoundingClientRect();
+                const itemCenter = rect.top + (rect.height / 2);
+                const relativePosition = (itemCenter - viewportCenter) / (window.innerHeight / 2);
+                const absoluteDistance = Math.abs(relativePosition);
+                
+                // Determine if this is the closest item or adjacent to it
+                const isClosest = data === closestItem;
+                const isAdjacent = Math.abs(
+                    itemData.indexOf(data) - itemData.indexOf(closestItem)
+                ) === 1;
+                
+                // Scale calculation
+                let scale = 1;
+                if (isClosest) {
+                    scale = 1.08;
+                } else if (isAdjacent) {
+                    // Subtle scale for adjacent items
+                    scale = 1 + (0.04 * Math.max(0, 1 - absoluteDistance));
+                }
+                
+                // Color intensity only for the closest item
+                const colorIntensity = isClosest ? 1 : 0;
+                
+                // Create unique class name for this item's current state
+                const className = `feature-state-${index}`;
+                data.element.className = `feature-item ${className}`;
+                
+                // Add styles for this state
+                styleRules += `
+                    .${className} {
+                        transform: translate3d(0,0,0) scale(${scale});
+                        background-color: ${colorIntensity > 0 ? 'rgb(124, 58, 237)' : 'white'};
+                    }
+                    .${className} .feature-title {
+                        color: ${colorIntensity > 0 ? 'white' : ''};
+                    }
+                    .${className} .feature-description {
+                        color: ${colorIntensity > 0 ? 'rgba(255, 255, 255, 0.9)' : ''};
+                    }
+                    .${className} .feature-number {
+                        color: ${colorIntensity > 0 ? 'rgba(255, 255, 255, 0.8)' : ''};
+                    }
+                    .${className} .feature-icon svg {
+                        stroke: ${colorIntensity > 0 ? 'white' : ''};
+                    }
+                `;
+            });
+            
+            // Update all styles at once
+            styleElement.textContent = styleRules;
+            
+            ticking = false;
         }
 
         function onScroll() {
-            // Cancel any pending animation frame
-            if (rafId) {
-                cancelAnimationFrame(rafId);
-            }
-            
-            // Schedule new animation frame
-            rafId = requestAnimationFrame(updateFeatures);
-            
-            // Clear the timeout
-            window.clearTimeout(isScrolling);
-            
-            // Set a timeout to run after scrolling ends
-            isScrolling = setTimeout(() => {
-                // One final update after scrolling ends
+            if (!ticking) {
+                ticking = true;
                 rafId = requestAnimationFrame(updateFeatures);
-            }, 66);
+            }
         }
 
-        // Add scroll event listener
+        // Add scroll event listener with passive flag for better performance
         window.addEventListener('scroll', onScroll, { passive: true });
         
         // Initial update
@@ -321,20 +324,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Cleanup function
         return function cleanup() {
-            window.clearTimeout(isScrolling);
             if (rafId) {
                 cancelAnimationFrame(rafId);
             }
             window.removeEventListener('scroll', onScroll);
+            styleElement.remove();
             
             // Reset all styles
             itemData.forEach(data => {
+                data.element.className = 'feature-item';
                 data.element.style.transform = '';
                 data.element.style.backgroundColor = '';
-                data.title.style.color = '';
-                data.description.style.color = '';
-                data.number.style.color = '';
-                data.icon.style.stroke = '';
             });
         };
     }

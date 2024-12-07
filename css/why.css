@@ -47,19 +47,17 @@
 .feature-item {
     position: relative;
     padding: 2rem;
-    background: #f8f9fe;
-    border-radius: var(--radius-md);
-    display: grid;
-    grid-template-columns: 64px 1fr;
-    gap: 2rem;
-    align-items: center;
-    transition: all 0.3s ease;
-}
-
-.feature-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    background: #fff;
+    background: white;
+    border-radius: var(--radius-lg);
+    margin: 1rem 0;
+    transform-origin: center;
+    will-change: transform, opacity, background-color;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+    -webkit-perspective: 1000;
+    perspective: 1000;
 }
 
 .feature-icon {
@@ -69,12 +67,19 @@
     opacity: 0.7;
     display: flex;
     align-items: center;
-    transition: all 0.3s ease;
+    justify-content: center;
+    position: relative;
 }
 
-.feature-item:hover .feature-icon {
-    opacity: 1;
-    transform: scale(1.05);
+.feature-icon svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: relative;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
 }
 
 .feature-number {
@@ -151,36 +156,28 @@
     }
 
     .feature-item {
-        position: relative;
         padding: 2rem;
-        background: white;
-        border-radius: var(--radius-lg);
         margin: 1rem 0;
-        will-change: transform, background-color;
-        transform-origin: center;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        transition: transform 0.05s linear, background-color 0.05s linear;
+        transition: transform 0.2s ease-out;
     }
 
-    .feature-item .feature-icon {
+    .feature-icon {
         width: 48px;
         height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 2;
     }
 
-    .feature-item .feature-icon svg {
-        transition: stroke 0.05s linear;
-    }
-
-    .feature-item .feature-number {
-        transition: color 0.05s linear;
-    }
-
-    .feature-item .feature-title {
-        transition: color 0.05s linear;
-    }
-
-    .feature-item .feature-description {
-        transition: color 0.05s linear;
+    /* Force hardware acceleration for the entire container */
+    .features-grid {
+        -webkit-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        z-index: 1;
     }
 }
 
