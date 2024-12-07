@@ -217,8 +217,9 @@ document.addEventListener('DOMContentLoaded', function () {
     function initFeatureScroll() {
         if (window.innerWidth > 768) return;
 
-        const section = document.querySelector('.why-voi-section');
         const featureItems = document.querySelectorAll('.feature-item');
+        let ticking = false;
+        let rafId = null;
         
         function updateFeatures() {
             const viewportCenter = window.innerHeight / 2;
@@ -230,26 +231,28 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Calculate position relative to viewport center (-1 to 1)
                 const relativePosition = (itemCenter - viewportCenter) / (window.innerHeight / 2);
                 
-                // Calculate scale (1 to 1.08)
+                // Calculate scale (1 to 1.08) - linear scale for smooth size transition
                 const scale = 1 + Math.max(0, 0.08 * (1 - Math.abs(relativePosition)));
                 
-                // Calculate color intensity (0 to 1)
-                const colorIntensity = Math.max(0, 1 - Math.abs(relativePosition * 1.2));
+                // Calculate color intensity (0 to 1) - using power curve for more dramatic color falloff
+                const colorIntensity = Math.max(0, 1 - Math.abs(relativePosition));
+                // Apply a power curve to make the color transition more dramatic
+                const colorPower = Math.pow(colorIntensity, 3);
                 
                 // Apply transformations
                 item.style.transform = `scale(${scale})`;
                 
                 // Update colors based on intensity
-                if (colorIntensity > 0) {
+                if (colorPower > 0) {
                     // Interpolate between white (255,255,255) and Voi purple (124,58,237)
-                    const r = Math.round(255 - (colorIntensity * (255 - 124)));
-                    const g = Math.round(255 - (colorIntensity * (255 - 58)));
-                    const b = Math.round(255 - (colorIntensity * (255 - 237)));
+                    const r = Math.round(255 - (colorPower * (255 - 124)));
+                    const g = Math.round(255 - (colorPower * (255 - 58)));
+                    const b = Math.round(255 - (colorPower * (255 - 237)));
                     
                     item.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
                     
-                    // Text color transitions
-                    if (colorIntensity > 0.5) {
+                    // Text color transitions - only update if needed
+                    if (colorPower > 0.5) {
                         item.querySelector('.feature-title').style.color = 'white';
                         item.querySelector('.feature-description').style.color = 'rgba(255, 255, 255, 0.9)';
                         item.querySelector('.feature-number').style.color = 'rgba(255, 255, 255, 0.8)';
@@ -269,22 +272,63 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
             
-            requestAnimationFrame(updateFeatures);
+            ticking = false;
         }
+
+        // Throttled scroll handler
+        function onScroll() {
+            if (!ticking) {
+                ticking = true;
+                rafId = requestAnimationFrame(updateFeatures);
+            }
+        }
+
+        // Add scroll event listener with throttling
+        window.addEventListener('scroll', onScroll, { passive: true });
         
-        // Start the animation loop
-        requestAnimationFrame(updateFeatures);
+        // Initial check
+        updateFeatures();
+
+        // Cleanup function
+        return function cleanup() {
+            if (rafId) {
+                cancelAnimationFrame(rafId);
+            }
+            window.removeEventListener('scroll', onScroll);
+            featureItems.forEach(item => {
+                item.style.transform = '';
+                item.style.backgroundColor = '';
+                const elements = [
+                    item.querySelector('.feature-title'),
+                    item.querySelector('.feature-description'),
+                    item.querySelector('.feature-number'),
+                    item.querySelector('.feature-icon svg')
+                ];
+                elements.forEach(el => {
+                    if (el) {
+                        el.style.color = '';
+                        if (el.tagName === 'svg') el.style.stroke = '';
+                    }
+                });
+            });
+        };
     }
 
     // Initialize on mobile
-    if (window.innerWidth <= 768) {
-        initFeatureScroll();
-        
-        // Reinitialize on resize
-        window.addEventListener('resize', () => {
-            if (window.innerWidth <= 768) {
-                initFeatureScroll();
+    let cleanup = null;
+    
+    function init() {
+        if (window.innerWidth <= 768) {
+            if (!cleanup) {
+                cleanup = initFeatureScroll();
             }
-        });
+        } else if (cleanup) {
+            cleanup();
+            cleanup = null;
+        }
     }
+
+    // Initialize and handle resize
+    init();
+    window.addEventListener('resize', init);
 });
