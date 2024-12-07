@@ -244,55 +244,104 @@
 
 /* Tablet/Small screens */
 @media (max-width: 768px) {
+    .use-cases-section {
+        padding: 4rem 1.5rem;
+    }
+
+    .carousel-slide {
+        flex: 0 0 100%;
+        padding: 0 1rem;
+    }
+
     .case-study-card {
         display: flex;
         flex-direction: column;
         background: white;
-        border-radius: 1rem;
+        border-radius: var(--radius-lg);
         overflow: hidden;
-        height: auto;
+        height: 480px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     .case-study-image-container {
+        position: relative;
         height: 240px;
+        width: 100%;
+    }
+
+    .case-study-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .case-study-title {
+        position: absolute;
+        bottom: 1.5rem;
+        left: 1.5rem;
+        color: white;
+        font-size: 1.75rem;
+        z-index: 2;
     }
 
     .case-study-content {
+        flex: 1;
         padding: 1.5rem;
-        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: var(--voi-dark);
     }
 
     .case-study-quote {
         font-size: 1rem;
-        line-height: 1.5;
-        padding-top: 0;
+        line-height: 1.6;
+        color: white;
+        margin: 0 0 1rem 0;
+        flex-grow: 1;
     }
 
     .case-study-alt {
-        font-size: 1rem;
-        margin-top: 1.5rem;
+        font-size: 1.1rem;
+        color: var(--voi-light);
+        padding-top: 1rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        margin: 0;
     }
 }
 
 /* Mobile screens */
 @media (max-width: 480px) {
+    .use-cases-section {
+        padding: 3rem 1rem;
+    }
+
+    .case-study-card {
+        height: 420px;
+    }
+
     .case-study-image-container {
         height: 200px;
     }
 
+    .case-study-title {
+        font-size: 1.5rem;
+        bottom: 1.25rem;
+        left: 1.25rem;
+    }
+
     .case-study-content {
         padding: 1.25rem;
-        min-height: 180px;
     }
 
     .case-study-quote {
         font-size: 0.95rem;
+        margin: 0 0 0.75rem 0;
     }
 
     .case-study-alt {
-        font-size: 0.95rem;
-        margin-top: 1.25rem;
+        font-size: 1rem;
+        padding-top: 0.75rem;
     }
 }
 
