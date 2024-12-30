@@ -191,10 +191,11 @@
 .featured-logos img[alt="Decrypt"],
 .featured-logos img[alt="Blockworks"],
 .featured-logos img[alt="Bitcoin.com News"],
-.featured-logos img[alt="CoinDesk"] {
-    height: 20px;
-    min-width: 100px;
-    max-width: 120px;
+.featured-logos img[alt="CoinDesk"],
+.featured-logos img[alt="Crypto.news"] {
+    height: 24px;
+    min-width: 120px;
+    max-width: 140px;
 }
 
 /* Media Queries */
@@ -301,10 +302,11 @@
     .featured-logos img[alt="Decrypt"],
     .featured-logos img[alt="Blockworks"],
     .featured-logos img[alt="Bitcoin.com News"],
-    .featured-logos img[alt="CoinDesk"] {
-        height: 16px;
-        min-width: 80px;
-        max-width: 100px;
+    .featured-logos img[alt="CoinDesk"],
+    .featured-logos img[alt="Crypto.news"] {
+        height: 20px;
+        min-width: 100px;
+        max-width: 120px;
     }
 }
 
@@ -345,9 +347,10 @@
     .featured-logos img[alt="Decrypt"],
     .featured-logos img[alt="Blockworks"],
     .featured-logos img[alt="Bitcoin.com News"],
-    .featured-logos img[alt="CoinDesk"] {
-        height: 14px;
-        min-width: 70px;
-        max-width: 90px;
+    .featured-logos img[alt="CoinDesk"],
+    .featured-logos img[alt="Crypto.news"] {
+        height: 16px;
+        min-width: 80px;
+        max-width: 100px;
     }
 }
